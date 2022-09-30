@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use function Sodium\add;
 
 class VendasController extends Controller
 {
@@ -22,12 +23,28 @@ class VendasController extends Controller
      */
     public function index()
     {
-        $vendas = Venda::orderBy('created_at', 'desc')->take(10)->get();;
+
+        $vendas = Venda::orderBy('created_at', 'desc')->get();
+        $promocional = DB::table('vendas')
+            ->leftJoin('produto', 'produto.id','=', 'vendas.produto_id')
+            ->where('produto.id','=',2)->sum('vendas.qtd');
+
+        $loteAtual= DB::table('vendas')
+            ->leftJoin('produto', 'produto.id','=', 'vendas.produto_id')
+            ->where('produto.id','=',3)->sum('vendas.qtd');
+
+        $dados = DB::select(
+            "select v.nome as Vendedor,  SUM(venda.qtd) AS qtd, p.nome Produto
+                    from vendas venda
+                        inner join vendedor v on v.id = vendedor_id
+                        left join produto p on p.id = venda.produto_id
+                        GROUP by v.nome, p.nome ");
+
         $qtdVend =  0;
         foreach ($vendas as $vend){
             $qtdVend+= $vend['qtd'];
         }
-        return view('vendas.index', compact('vendas', 'qtdVend'));
+        return view('vendas.index', compact('vendas', 'qtdVend', 'promocional', 'loteAtual', 'dados'));
     }
 
     /**

@@ -8,6 +8,7 @@
                 <div class="card">
                     <div class="card-header text-center"><h3>Cadastro de Venda</h3></div>
                     {{-- o atributo action aponta para a rota que está direcionada ao método store do controlador --}}
+                    <label class="text-bg-danger fw-bold">Atenção!!! Só registre a venda SÓ DE QUEM PAGOU!</label>
                     <form class="form" method="POST" action="{{$action}}">
                         {{-- CSRF é um token de segurança para validar o formulário --}}
                         @csrf

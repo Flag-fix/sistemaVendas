@@ -5,7 +5,11 @@
 
     <div class="card">
         <div class="card-header">
-            <h2>Convites Vendidos {{ $qtdVend }}</h2>
+            <h2>Total Vendas {{ $qtdVend }}</h2>
+            <div class="row">
+                <h5>Lote Promocional {{ $promocional }}</h5>
+                <h5>1ª Lote {{ $loteAtual }}</h5>
+            </div>
         </div>
         <div class="card-body">
             <a href="/vendas/create" class="btn btn-primary">Registrar Venda</a>
@@ -19,19 +23,17 @@
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Convite</th>
                 <th scope="col">Vendedor</th>
+                <th scope="col">Item Vendido</th>
                 <th scope="col">Quantidade Vendida</th>
             </tr>
             </thead>
             <tbody>
             {{-- itera sobre a coleção de veículos --}}
-            @foreach ($vendas as $v)
+            @foreach ($dados as $v)
                 <tr>
-                    <td>{{$v->id}}</td>
-                    <td>{{$v->produto->nome}} - {{$v->produto->valor}}</td>
-                    <td> {{ $v->vendedor->nome }} </td>
+                    <td>{{$v->Vendedor}}</td>
+                    <td> {{$v->Produto}} </td>
                     <td> {{ $v->qtd }} </td>
                 </tr>
             @endforeach
